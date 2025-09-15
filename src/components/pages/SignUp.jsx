@@ -1,7 +1,7 @@
 import React from 'react';
 import '../../App.css';
 import ContactForm from './form.jsx';
-import './SignUp.css'
+import './Signup.css'
 
 export default function SignUp() {
   return (
