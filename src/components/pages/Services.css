@@ -1,0 +1,53 @@
+.cards {
+    display: flex;
+    flex-wrap: wrap;  /* Allows cards to wrap to the next line */
+    justify-content: center; /* Centers cards */
+    gap: 20px; /* Adds space between cards */
+    padding: 5%; /* Adjusted padding */
+  }
+  
+  .card-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 45%; /* Adjusts width so two cards fit in one row */
+    max-width: 400px; /* Prevents cards from being too wide */
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  .card-price {
+    font-size: 18px;
+    color: green;
+    font-weight: bold;
+}
+
+  .h1 {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 70px;
+    text-align: center;
+    padding: 10px;
+    color: rgb(67, 70, 66); /* Ensures readability */
+    background: linear-gradient(to right, skyblue,white);
+    border-radius: 10px; /* Soft edges */
+    display: inline-block;
+}
+
+  
+  .book-now {
+    background-color: #ff6600;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 10px;
+    transition: background 0.3s ease;
+  }
+  
+  .book-now:hover {
+    background-color: #cc5200;
+  }
+    

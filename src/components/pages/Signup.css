@@ -1,0 +1,26 @@
+.signup-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2%;
+  background: #e9e8e8ff;  /* your background */
+  background-size: cover;
+  background-position: center;
+  gap: 1%; /* space between columns */
+}
+
+.signup-heading {
+  flex: 1;
+  max-width: 40%;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.signup-form {
+  flex: 1;
+  align-items: center ;
+  justify-content: center;
+  max-width: 100%;
+}
