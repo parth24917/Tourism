@@ -1,103 +1,127 @@
-import { useState, useEffect } from "react";
-import { vapi } from "@/lib/vapi.sdk"; 
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useRef } from 'react';
+import Vapi from '@vapi-ai/web';
+import './Agent.css';
+import tb from '../../public/images/travbud.png';
+import user from '../../public/images/user.jpg';
 
-const TourismAgent = () => {
-  const navigate = useNavigate();
-  const [callStatus, setCallStatus] = useState("INACTIVE");
-  const [itinerary, setItinerary] = useState(null);
+const Agent = ({ apiKey, assistantId, config = {} }) => {
+  const [vapi, setVapi] = useState(null);
+  const [isConnected, setIsConnected] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [transcript, setTranscript] = useState([]);
+
+  // Ref for the transcript container to enable auto-scroll
+  const transcriptEndRef = useRef(null);
 
   useEffect(() => {
-    const onCallStart = () => setCallStatus("ACTIVE");
-    const onCallEnd = async () => {
-      setCallStatus("FINISHED");
+    const vapiInstance = new Vapi(apiKey);
+    setVapi(vapiInstance);
 
-     
-      try {
-        const res = await fetch("/api/get-itinerary"); 
-        const data = await res.json();
-        setItinerary(data);
-      } catch (err) {
-        console.error("Failed to fetch itinerary", err);
+    vapiInstance.on('call-start', () => setIsConnected(true));
+    vapiInstance.on('call-end', () => {
+      setIsConnected(false);
+      setIsSpeaking(false);
+    });
+    vapiInstance.on('speech-start', () => setIsSpeaking(true));
+    vapiInstance.on('speech-end', () => setIsSpeaking(false));
+
+    vapiInstance.on('message', (message) => {
+      if (message.type === 'transcript' && message.transcriptType === 'final') {
+        setTranscript((prev) => [...prev, { role: message.role, text: message.transcript }]);
       }
-    };
+    });
 
-    const onError = (error) => console.error("Error:", error);
-
-    vapi.on("call-start", onCallStart);
-    vapi.on("call-end", onCallEnd);
-    vapi.on("error", onError);
+    vapiInstance.on('error', (error) => {
+      console.error('Vapi error:', error);
+      console.error('Vapi error details:', error.details);
+    });
 
     return () => {
-      vapi.off("call-start", onCallStart);
-      vapi.off("call-end", onCallEnd);
-      vapi.off("error", onError);
+      vapiInstance?.stop();
     };
-  }, []);
+  }, [apiKey]);
 
-  const handleCall = async () => {
-    setCallStatus("CONNECTING");
-    await vapi.start(process.env.REACT_APP_VAPI_TOURISM_WORKFLOW_ID);
+  // Auto-scroll to bottom on transcript update
+  useEffect(() => {
+    if (transcriptEndRef.current) {
+      transcriptEndRef.current.scrollTop = transcriptEndRef.current.scrollHeight;
+    }
+  }, [transcript]);
+
+  const startCall = () => {
+    if (vapi) vapi.start(assistantId);
   };
 
-  const handleDisconnect = () => {
-    setCallStatus("FINISHED");
-    vapi.stop();
+  const endCall = () => {
+    if (vapi) vapi.stop();
   };
 
   return (
-    <div className="tourism-agent">
-      {callStatus !== "ACTIVE" && callStatus !== "CONNECTING" && (
-        <button onClick={handleCall} className="btn-start">
-          Start Trip Planning Call
-        </button>
-      )}
-
-      {callStatus === "CONNECTING" && <p>Connecting to AI travel agent...</p>}
-
-      {callStatus === "ACTIVE" && (
-        <button onClick={handleDisconnect} className="btn-end">
-          End Call
-        </button>
-      )}
-
-      {/* Itinerary display after call ends */}
-      {itinerary && (
-        <div className="itinerary">
-          <h2>Trip to {itinerary.location}</h2>
-          <h3>Recommended Hotels</h3>
-          <ul>
-            {itinerary.hotels.map((hotel, i) => (
-              <li key={i}>
-                <a href={hotel.bookingUrl} target="_blank" rel="noreferrer">{hotel.name}</a> - {hotel.price}
-              </li>
-            ))}
-          </ul>
-
-          <h3>Transport Options</h3>
-          <ul>
-            {itinerary.transport.map((t, i) => (
-              <li key={i}>
-                <a href={t.bookingUrl} target="_blank" rel="noreferrer">{t.name}</a> - {t.price}
-              </li>
-            ))}
-          </ul>
-
-          <h3>Day-by-Day Plan</h3>
-          <ol>
-            {itinerary.days.map((day, i) => (
-              <li key={i}>
-                <strong>Day {i+1}:</strong> {day.activities.join(", ")}
-              </li>
-            ))}
-          </ol>
-
-          <p><strong>Total Budget:</strong> {itinerary.totalBudget}</p>
-          <p><strong>Budget per Person:</strong> {itinerary.budgetPerPerson}</p>
+    <div className="agent-container">
+      <div className="agent-panel">
+        <div className="container">
+          <div className={`card ${isConnected && isSpeaking ? 'active-border' : ''}`}>
+            <img src={tb} className="cardimg" alt="Assistant" />
+          </div>
+          <div className={`card ${isConnected && !isSpeaking ? 'active-border' : ''}`}>
+            <img src={user} className="cardimg" alt="User" />
+          </div>
+        
         </div>
-      )}
+
+        <div className="rightside">
+          <div
+            className="agent-transcript"
+            ref={transcriptEndRef}
+           
+          >
+            {transcript.length === 0 ? (
+              <p className="agent-empty-msg">Conversation will appear here...</p>
+            ) : (
+              transcript.map((msg, i) => (
+                <div
+                  key={i}
+                  className={`agent-msg-row ${msg.role === 'user' ? 'user-msg' : 'assistant-msg'}`}
+                >
+                  <span
+                    className={`agent-msg-bubble ${
+                      msg.role === 'user' ? 'user-bubble' : 'assistant-bubble'
+                    }`}
+                  >
+                    {msg.text}
+                  </span>
+                </div>
+              ))
+            )}
+          </div>
+          <div className="buttons">
+            {!isConnected ? (
+              <button className="agent-start-btn" onClick={startCall}>
+                Talk to Assistant
+              </button>
+            ) : (
+              <button className="agent-start-btn" onClick={startCall}>
+                ....
+              </button>
+            )}
+            {isConnected && (
+               <div className="agent-header">
+            <div className="agent-status">
+              <div className={`agent-indicator ${ isSpeaking ? 'speaking' : 'listening'}`}></div>
+              <span className="agent-status-text">
+                { isSpeaking ? 'Assistant Speaking...' : 'Assistant Listening...'}
+              </span>
+            </div>
+          </div>
+
+            )}
+             
+            <button className="agent-end-btn" onClick={endCall}>End Call</button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default TourismAgent;
+export default Agent;

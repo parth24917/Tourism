@@ -5,6 +5,7 @@ import Home from './components/pages/Home';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Services from './components/pages/Services';
 import Products from './components/pages/Products';
+import Agent from './components/Agent'
 import SignUp from './components/pages/SignUp'; // Import added
 
 function App() {
@@ -15,7 +16,9 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/services' element={<Services />} />
         <Route path='/products' element={<Products />} />
-        <Route path='/contact-us' element={<SignUp />} />
+         <Route path='/contact-us' element={<SignUp />} />
+        <Route path='/travbud' element={<Agent apiKey={import.meta.env.VITE_PUBLIC_API_KEY} assistantId={import.meta.env.VITE_ASSISTANT_ID} />} />
+        
       </Routes>
     </Router>
   );
