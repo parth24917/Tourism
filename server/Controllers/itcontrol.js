@@ -1,5 +1,5 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import Itinerary from '../models/itmodel.js';
+import Itinerary from '../Models/itmodel.js';
 import dotenv from 'dotenv';
 dotenv.config();
 
