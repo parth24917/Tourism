@@ -70,6 +70,21 @@
   box-shadow: 0 10px 12px rgba(251, 36, 36, 0.3);
   transition: all 0.3s ease;
 }
+.view-btn{
+  background: #9a3eef;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 20px 2px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 10%;
+  margin: 0.5rem;
+  align-self: center;
+  box-shadow: 0 10px 12px rgba(251, 36, 36, 0.3);
+  transition: all 0.3s ease;
+}
 
 .agent-transcript {
   display:flex;

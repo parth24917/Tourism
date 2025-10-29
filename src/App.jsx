@@ -6,7 +6,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Services from './components/pages/Services';
 import Products from './components/pages/Products';
 import Agent from './components/Agent'
-import SignUp from './components/pages/SignUp'; // Import added
+import SignUp from './components/pages/SignUp'; 
+import Itinerary from './components/pages/Itinerary';
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
         <Route path='/products' element={<Products />} />
          <Route path='/contact-us' element={<SignUp />} />
         <Route path='/travbud' element={<Agent apiKey={import.meta.env.VITE_PUBLIC_API_KEY} assistantId={import.meta.env.VITE_ASSISTANT_ID} />} />
-        
+        <Route path = '/view-itinerary' element = {<Itinerary/>}/>
       </Routes>
     </Router>
   );

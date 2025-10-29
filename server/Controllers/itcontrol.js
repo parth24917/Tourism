@@ -31,7 +31,7 @@ export const createItinerary = async (req, res) => {
         1. A day-by-day detailed itinerary
         2. Hotel recommendations with booking links (use actual booking sites like booking.com, expedia.com etc.)
         3. Transportation booking links and options
-        4. Per person budget breakdown including:
+        4. Per person budget breakdown(in INR) including:
            - Accommodation costs
            - Transportation costs
            - Food expenses
@@ -81,7 +81,7 @@ export const createItinerary = async (req, res) => {
 
 export const getAllItineraries = async (req, res) => {
     try {
-        const itineraries = await Itinerary.find().sort({ createdAt: -1 });
+        const itineraries = await Itinerary.findOne().sort({ createdAt: -1 });
         res.status(200).json({
             success: true,
             count: itineraries.length,

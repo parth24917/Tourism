@@ -3,6 +3,7 @@ import Vapi from '@vapi-ai/web';
 import './Agent.css';
 import tb from '../../public/images/travbud.png';
 import user from '../../public/images/user.jpg';
+import { useNavigate } from 'react-router-dom';
 
 const Agent = ({ apiKey, assistantId, config = {} }) => {
   const [vapi, setVapi] = useState(null);
@@ -12,7 +13,7 @@ const Agent = ({ apiKey, assistantId, config = {} }) => {
 
   // Ref for the transcript container to enable auto-scroll
   const transcriptEndRef = useRef(null);
-
+ const navigate = useNavigate();
   useEffect(() => {
     const vapiInstance = new Vapi(apiKey);
     setVapi(vapiInstance);
@@ -55,7 +56,9 @@ const Agent = ({ apiKey, assistantId, config = {} }) => {
   const endCall = () => {
     if (vapi) vapi.stop();
   };
+ const view = () =>{
 
+ }
   return (
     <div className="agent-container">
       <div className="agent-panel">
@@ -117,6 +120,7 @@ const Agent = ({ apiKey, assistantId, config = {} }) => {
             )}
              
             <button className="agent-end-btn" onClick={endCall}>End Call</button>
+            <button className='view-btn'  onClick={() => navigate('/view-itinerary')}>View</button>
           </div>
         </div>
       </div>
