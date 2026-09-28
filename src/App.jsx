@@ -16,7 +16,6 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/services' element={<Services />} />
-        <Route path='/products' element={<Products />} />
          <Route path='/contact-us' element={<SignUp />} />
         <Route path='/travbud' element={<Agent apiKey={import.meta.env.VITE_PUBLIC_API_KEY} assistantId={import.meta.env.VITE_ASSISTANT_ID} />} />
         <Route path = '/view-itinerary' element = {<Itinerary/>}/>

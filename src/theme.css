@@ -1,0 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap');
+
+/* Theme tokens: white, cobalt, dark grey. Import once in main.jsx. */
+:root {
+  --accent: #2f5bea;       /* buttons, links, focus */
+  --accent-dark: #2347c0;  /* hover, link text */
+  --accent-tint: #e8edfd;  /* hover and focus washes only */
+  --ink: #1f2937;          /* headings, navbar, dark surfaces */
+  --grey-600: #4b5563;     /* supporting text */
+  --white: #ffffff;
+  --surface-warm: #faf8f5; /* section background */
+  --line: #e5e7eb;         /* card and chip borders */
+}

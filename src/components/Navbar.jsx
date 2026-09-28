@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
 import { Button } from './Button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css';
+import AppButton from './AppButton';
 
 function Navbar() {
   const [click, setClick] = useState(false);
+  const navigate = useNavigate();
   const [button, setButton] = useState(true);
 
   const handleClick = () => setClick(!click);
@@ -53,15 +55,6 @@ function Navbar() {
             </li>
             <li className='nav-item'>
               <Link
-                to='/products'
-                className='nav-links'
-                onClick={closeMobileMenu}
-              >
-                Products
-              </Link>
-            </li>
-            <li className='nav-item'>
-              <Link
                 to='/travbud'
                 className='nav-links'
                 onClick={closeMobileMenu}
@@ -70,7 +63,15 @@ function Navbar() {
               </Link>
             </li>
           </ul>
-          {button && <Button buttonStyle='btn--outline'>Contact US</Button>}
+          {button &&  <AppButton
+                    variant="outlined"
+                    onDark
+                    size="large"
+                    onClick={() => navigate('/contact-us')}
+                    sx={{ width: { xs: '100%', sm: 'auto' } }}
+                  >
+                    Contact Us
+                  </AppButton>}
         </div>
       </nav>
     </>
