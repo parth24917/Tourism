@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import "./Navbar.css";
 
@@ -25,9 +26,9 @@ export default function Navbar({ activePath }) {
   return (
     <header className="nav">
       <div className="nav__inner">
-        <a className="nav__logo" href="/" onClick={close} aria-label="TRVL home">
+        <Link className="nav__logo" to="/" onClick={close} aria-label="TRVL home">
           TRVL<span className="nav__logo-dot" aria-hidden="true" />
-        </a>
+        </Link>
 
         <nav
           id="nav-menu"
@@ -37,20 +38,20 @@ export default function Navbar({ activePath }) {
           <ul className="nav__links">
             {links.map(({ label, href }) => (
               <li key={label}>
-                <a
-                  href={href}
+                <Link
+                  to={href}
                   onClick={close}
                   className={current === href ? "nav__link nav__link--active" : "nav__link"}
                   aria-current={current === href ? "page" : undefined}
                 >
                   {label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
-          <a className="nav__cta" href="/contact-us" onClick={close}>
+          <Link className="nav__cta" to="/contact-us" onClick={close}>
             Contact Us
-          </a>
+          </Link>
         </nav>
 
         <button
