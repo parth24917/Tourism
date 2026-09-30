@@ -1,5 +1,5 @@
 import { BadgePercent, Compass, Headset, CalendarCheck } from "lucide-react";
-import "./WhyChooseUs.css";
+import "./Whychooseus.css";
 
 const features = [
   {
