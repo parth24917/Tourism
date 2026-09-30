@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Plus, MessageCircle } from "lucide-react";
-import "./FAQ.css";
+import "./Faq.css";
 
 const categories = ["Booking", "Payments", "Cancellation", "Travel & safety"];
 
